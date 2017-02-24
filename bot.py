@@ -72,7 +72,7 @@ class CallbackResource(object):
 
     def cleaning(self, sys_utt):
         sys_utt = HTMLParser().unescape(sys_utt)
-        sys_utt = re.sub('<A[^>]+', '', sys_utt)
+        sys_utt = re.sub('<A[^>]+>', '', sys_utt)
         sys_utt = sys_utt.replace('</A>', '')
         return sys_utt
 
