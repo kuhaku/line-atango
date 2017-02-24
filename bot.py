@@ -30,14 +30,17 @@ class CallbackResource(object):
     def _build_sort(self, sort):
         sort_item = []
         for (field, order) in sort:
-            sort_item.append({
-                '_script': {
-                    'script': "doc.%s.size()" % field,
-                    "lang": "groovy",
-                    "type": "string",
-                    'order': order
-                }
-            })
+            if field in ('dt', '_score'):
+                sort_item.append({field: {'order': order}})
+            else:
+                sort_item.append({
+                    '_script': {
+                        'script': "doc.%s.size()" % field,
+                        "lang": "groovy",
+                        "type": "string",
+                        'order': order
+                    }
+                })
         return sort_item
 
     def _search(self, query):
@@ -59,7 +62,7 @@ class CallbackResource(object):
             },
             'size': 100
         }
-        sort_item = self._build_sort([('quoted_by', 'desc')])
+        sort_item = self._build_sort([('quoted_by', 'desc'), ('_score', 'desc')])
         body.update({'sort': sort_item})
         logger.debug(body)
         result = es.search(index=['qwerty', 'misao'], body=body, _source=True)
