@@ -58,7 +58,7 @@ class CallbackResource(object):
             },
             'size': 100
         }
-        sort_item = self._build_sort([('_score', 'desc'), ('quoted_by', 'desc')])
+        sort_item = self._build_sort([('quoted_by', 'desc'), ('_score', 'desc')])
         body.update({'sort': sort_item})
         logger.debug(body)
         result = es.search(index=['qwerty', 'misao'], body=body, _source=True)
@@ -80,7 +80,7 @@ class CallbackResource(object):
             if event['type'] == 'message':
                 try:
                     user_utt = event['message']['text']
-                    sys_utt = self._search(user_utt)
+                    sys_utt = self._search(user_utt)[0]
 
                 except Exception as e:
                     raise falcon.HTTPError(falcon.HTTP_503,
