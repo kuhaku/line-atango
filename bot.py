@@ -67,7 +67,7 @@ class CallbackResource(object):
         sort_item = self._build_sort([('_score', 'desc'), ('quoted_by', 'desc')])
         body.update({'sort': sort_item})
         logger.debug(body)
-        result = es.search(index=['qwerty', 'misao'], body=body, _source=True)
+        result = es.search(index=['qwerty', 'misao', 'mirai'], body=body, _source=True)
         return (x['_source'] for x in result['hits']['hits'])
 
     def cleaning(self, sys_utt):
