@@ -62,7 +62,7 @@ class CallbackResource(object):
             },
             'size': 100
         }
-        sort_item = self._build_sort([('quoted_by', 'desc'), ('_score', 'desc')])
+        sort_item = self._build_sort([('_score', 'desc'), ('quoted_by', 'desc')])
         body.update({'sort': sort_item})
         logger.debug(body)
         result = es.search(index=['qwerty', 'misao'], body=body, _source=True)
