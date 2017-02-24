@@ -92,6 +92,8 @@ class CallbackResource(object):
 
                 logger.debug('sw_words_res: {}'.format(sys_utt))
 
+                if not sys_utt:
+                    sys_utt = 'へえ(;´Д`)'
                 send_content = {
                     'replyToken': event['replyToken'],
                     'messages': [
