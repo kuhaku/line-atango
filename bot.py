@@ -53,7 +53,8 @@ class CallbackResource(object):
         body = {
             "query": {
                 "filtered": {
-                    "query": es_query
+                    "query": es_query,
+                    "filter": []
                 }
             },
             'size': 100
@@ -80,7 +81,7 @@ class CallbackResource(object):
             if event['type'] == 'message':
                 try:
                     user_utt = event['message']['text']
-                    sys_utt = self._search(user_utt)[0]
+                    sys_utt = self._search(user_utt)[0]['text']
 
                 except Exception as e:
                     raise falcon.HTTPError(falcon.HTTP_503,
