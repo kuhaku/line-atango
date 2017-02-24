@@ -1,0 +1,20 @@
+{
+    "name": "line-atango",
+    "description": "Strange bot",
+    "website": "https://github.com/kuhaku/line-atango",
+    "repository": "https://github.com/kuhaku/line-atango",
+    "keywords": [
+        "python"
+    ],
+    "success_url": "/",
+    "env": {
+        "LINE_CHANNEL_ACCESS_TOKEN": {
+            "description": "LINE Channel Access Token",
+            "required": true
+        },
+        "ES_SERVER": {
+            "description": "Elasticsearch server",
+            "required": true
+        }
+    }
+}
