@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+from html.parser import HTMLParser
 import json
 import os
+import re
 from logging import DEBUG, StreamHandler, getLogger
 
 from elasticsearch import Elasticsearch
@@ -68,6 +70,12 @@ class CallbackResource(object):
         result = es.search(index=['qwerty', 'misao'], body=body, _source=True)
         return (x['_source'] for x in result['hits']['hits'])
 
+    def cleaning(self, sys_utt):
+        sys_utt = HTMLParser().unescape(sys_utt)
+        sys_utt = re.sub('<A[^>]+', '', sys_utt)
+        sys_utt = sys_utt.replace('</A>', '')
+        return sys_utt
+
     def on_post(self, req, resp):
         body = req.stream.read()
         if not body:
@@ -93,6 +101,7 @@ class CallbackResource(object):
                     raise falcon.HTTPError(falcon.HTTP_503,
                                            'Elasticseaarch server Error')
 
+                sys_utt = self.cleaning(sys_utt)
                 logger.debug('sw_words_res: {}'.format(sys_utt))
 
                 send_content = {
