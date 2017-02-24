@@ -66,7 +66,7 @@ class CallbackResource(object):
         body.update({'sort': sort_item})
         logger.debug(body)
         result = es.search(index=['qwerty', 'misao'], body=body, _source=True)
-        return [x['_source'] for x in result['hits']['hits']]
+        return (x['_source'] for x in result['hits']['hits'])
 
     def on_post(self, req, resp):
         body = req.stream.read()
@@ -78,22 +78,23 @@ class CallbackResource(object):
         logger.debug('receive_params: {}'.format(receive_params))
 
         for event in receive_params['events']:
-
             logger.debug('event: {}'.format(event))
 
+            sys_utt = 'へえ(;´Д`)'
             if event['type'] == 'message':
                 try:
                     user_utt = event['message']['text']
-                    sys_utt = self._search(user_utt)[0]['text']
+                    for r in self._search(user_utt):
+                        if r.get('text'):
+                            sys_utt = r.get('text')
+                            break
 
                 except Exception as e:
                     raise falcon.HTTPError(falcon.HTTP_503,
-                                           'sw_words Elasticseaarch server Error.')
+                                           'Elasticseaarch server Error')
 
                 logger.debug('sw_words_res: {}'.format(sys_utt))
 
-                if not sys_utt:
-                    sys_utt = 'へえ(;´Д`)'
                 send_content = {
                     'replyToken': event['replyToken'],
                     'messages': [
