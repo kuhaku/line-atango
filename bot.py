@@ -70,7 +70,7 @@ class CallbackResource(object):
         result = es.search(index=['qwerty', 'misao', 'mirai'], body=body, _source=True)
         return (x['_source'] for x in result['hits']['hits'])
 
-    def cleaning(self, sys_utt):
+    def _cleaning(self, sys_utt):
         sys_utt = HTMLParser().unescape(sys_utt)
         sys_utt = re.sub('<A[^>]+>', '', sys_utt)
         sys_utt = sys_utt.replace('</A>', '')
@@ -101,7 +101,7 @@ class CallbackResource(object):
                     raise falcon.HTTPError(falcon.HTTP_503,
                                            'Elasticseaarch server Error')
 
-                sys_utt = self.cleaning(sys_utt)
+                sys_utt = self._cleaning(sys_utt)
                 logger.debug('sw_words_res: {}'.format(sys_utt))
 
                 send_content = {
