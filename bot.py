@@ -102,6 +102,8 @@ class CallbackResource(object):
                                            'Elasticseaarch server Error')
 
                 sys_utt = self._cleaning(sys_utt)
+                if sys_utt == 'なるほど(;´Д`)それで？' and '？' in user_utt:
+                    sys_utt = 'わかんね(;´Д`)違うこと聞いて'
                 logger.debug('sw_words_res: {}'.format(sys_utt))
 
                 send_content = {
