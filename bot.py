@@ -107,6 +107,8 @@ class CallbackResource(object):
                         sys_utt = 'わかんね(;´Д`)違うこと聞いて'
                     elif '！' in user_utt:
                         sys_utt = 'すまんこ(;´Д`)'
+                elif user_utt == 'こんばんは':
+                    sys_utt = 'こんばんは(;´Д`)'
                 logger.debug('sw_words_res: {}'.format(sys_utt))
 
                 send_content = {
@@ -124,7 +126,7 @@ class CallbackResource(object):
                 res = requests.post(REPLY_ENDPOINT, data=send_content, headers=self.header)
                 logger.debug('res: {} {}'.format(res.status_code, res.reason))
 
-                resp.body = json.dumps('OK')
+            resp.body = json.dumps('OK')
 
 
 api = falcon.API()
