@@ -88,7 +88,7 @@ class CallbackResource(object):
         for event in receive_params['events']:
             logger.debug('event: {}'.format(event))
 
-            sys_utt = 'なるほど(;´Д`)それで？'
+            sys_utt = 'へえ(;´Д`)それで？'
             if event['type'] == 'message':
                 try:
                     user_utt = event['message']['text']
@@ -102,8 +102,11 @@ class CallbackResource(object):
                                            'Elasticseaarch server Error')
 
                 sys_utt = self._cleaning(sys_utt)
-                if sys_utt == 'なるほど(;´Д`)それで？' and '？' in user_utt:
-                    sys_utt = 'わかんね(;´Д`)違うこと聞いて'
+                if sys_utt == 'へえ(;´Д`)それで？':
+                    if '？' in user_utt:
+                        sys_utt = 'わかんね(;´Д`)違うこと聞いて'
+                    elif '！' in user_utt:
+                        sys_utt = 'すまんこ(;´Д`)'
                 logger.debug('sw_words_res: {}'.format(sys_utt))
 
                 send_content = {
