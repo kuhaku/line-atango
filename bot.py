@@ -88,7 +88,7 @@ class CallbackResource(object):
         for event in receive_params['events']:
             logger.debug('event: {}'.format(event))
 
-            sys_utt = 'へえ(;´Д`)'
+            sys_utt = 'なるほど(;´Д`)それで？'
             if event['type'] == 'message':
                 try:
                     user_utt = event['message']['text']
