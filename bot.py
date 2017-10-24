@@ -36,32 +36,21 @@ class CallbackResource(object):
                 sort_item.append({field: {'order': order}})
             else:
                 sort_item.append({
-                    '_script': {
-                        'script': "doc.%s.size()" % field,
-                        "lang": "groovy",
-                        "type": "string",
-                        'order': order
-                    }
-                })
+                '_script': {
+                    "type" : "number",
+                    'script':{
+                        "source": "doc.%s.size()" % field,
+                        "lang": "groovy"
+                    },
+                    'order': order
+                }
+            })
         return sort_item
 
     def _search(self, query):
-        es_query = {
-            'match': {
-                'q1': {
-                    'query': query,
-                    'operator': 'and',
-                    'minimum_should_match': '85%'
-                }
-            }
-        }
+        es_query = {'match': {'q1': query}}
         body = {
-            "query": {
-                "filtered": {
-                    "query": es_query,
-                    "filter": []
-                }
-            },
+            'query': es_query,
             'size': 100
         }
         sort_item = self._build_sort([('_score', 'desc'), ('quoted_by', 'desc')])
