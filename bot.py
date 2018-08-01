@@ -40,7 +40,7 @@ class CallbackResource(object):
                     "type" : "number",
                     'script':{
                         "source": "doc.%s.size()" % field,
-                        "lang": "groovy"
+                        "lang": "painless"
                     },
                     'order': order
                 }
