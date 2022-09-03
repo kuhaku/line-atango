@@ -1,4 +1,5 @@
+functions-framework==3.*
+line-bot-sdk
 elasticsearch
-falcon
-gunicorn
-requests
+google-cloud-logging
+icrawler
